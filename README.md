@@ -18,7 +18,28 @@ node index.js
 ### Deploy
 Install the [heroku client](https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up).
 
+Create the app on Heroku:
+```
+heroku create
+heroku apps:rename my-new-app-name
+```
+
 Set the Google Maps API key as an env variable on Heroku (you may need to login):
 ```
 heroku config:set GOOGLE_MAPS_API_KEY=YOUR GOOGLE MAPS API KEY
+```
+
+Deploy committed code:
+```
+git push heroku master
+```
+
+Open the app:
+```
+heroku open
+```
+
+Tail the logs:
+```
+heroku logs --tail
 ```
