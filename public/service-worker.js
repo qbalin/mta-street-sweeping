@@ -26,7 +26,7 @@ if (workbox) {
   },
   {
     "url": "index.html",
-    "revision": "0be8b1f312792a25f59d5ada9e550b87"
+    "revision": "feeba7606e60618777c43256ede7089c"
   },
   {
     "url": "manifest.json",
@@ -34,11 +34,11 @@ if (workbox) {
   },
   {
     "url": "page_controller.js",
-    "revision": "4cfe57ce1f1f00404abea596484e17e8"
+    "revision": "378fea411dcc64ddcc5cd7ffaf36746e"
   },
   {
     "url": "utils.js",
-    "revision": "d16d5aaf8982cd639f060cd161737494"
+    "revision": "a0be2808277522967ef7cdbab3fdb42d"
   }
 ]);
 

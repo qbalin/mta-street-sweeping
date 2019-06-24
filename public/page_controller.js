@@ -1,4 +1,4 @@
-import { getLocation } from './utils.js';
+import { getLocation, notify } from './utils.js';
 import API_KEY from './google_api_key.js';
 
 class Controller {
@@ -18,6 +18,7 @@ class Controller {
 			
 				this.googleMap.src = `https://www.google.com/maps/embed/v1/place?q=${latitude},${longitude}&key=${API_KEY}`
 				this.showSection('location');
+				notify('Found ya!');
 			});
 		}).bind(this);
 
