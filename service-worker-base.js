@@ -6,6 +6,8 @@ if (workbox) {
   workbox.core.setCacheNameDetails({
     prefix: 'mta-street-sweeping'
   });
+  // Temporarily force workbox logs to show on prod
+  workbox.setConfig({ debug: true });
 
   workbox.precaching.precacheAndRoute([]);
 
