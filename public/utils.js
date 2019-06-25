@@ -7,24 +7,15 @@ export function getLocation(cb) {
 }
 
 export function notify(message) {
-  if (!("Notification" in window)) {
-    return;
-  }
-
-  // Let's check whether notification permissions have already been granted
-  else if (Notification.permission === "granted") {
-    // If it's okay let's create a notification
-    var notification = new Notification(message);
-  }
-
-  // Otherwise, we need to ask the user for permission
-  else if (Notification.permission !== 'denied') {
-    Notification.requestPermission(function (permission) {
-      // If the user accepts, let's create a notification
-      if (permission === "granted") {
-        var notification = new Notification(message);
-      }
-    });
-  }
-
+  Notification.requestPermission(function(result) {
+    if (result === 'granted') {
+      navigator.serviceWorker.ready.then(function(registration) {
+        registration.showNotification(message, {
+          body: 'Buzz! Buzz!',
+          vibrate: [200, 100, 200, 100, 200, 100, 200],
+          tag: 'vibration-sample'
+        });
+      });
+    }
+  });
 }
