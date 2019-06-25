@@ -3,6 +3,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
 
+  workbox.core.setCacheNameDetails({
+    prefix: 'mta-street-sweeping'
+  });
+
   workbox.precaching.precacheAndRoute([]);
 
   workbox.routing.registerRoute(
