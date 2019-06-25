@@ -1,4 +1,4 @@
 node_modules/
 public/google_api_key.js
-set_env.sh
+scripts/setup_env.sh
 public/service-worker.js

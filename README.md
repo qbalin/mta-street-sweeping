@@ -1,17 +1,18 @@
 ### Setup
 
 Create a Google Maps API key ([Maps Embed API](https://console.cloud.google.com/google/maps-apis))
-and add it as a secret:
+and add it as a secret (replace YOUR GOOGLE MAPS API KEY by the proper value):
 
 ```
-printf '#!/bin/bash\nexport GOOGLE_MAPS_API_KEY=YOUR GOOGLE MAPS API KEY' > set_env.sh
-chmod u+x set_env.sh
+printf '#!/bin/bash\nexport GOOGLE_MAPS_API_KEY=YOUR GOOGLE MAPS API KEY\n./scripts/prepare_app.sh' > scripts/setup_env.sh
+chmod u+x scripts/setup_env.sh
+chmod u+x scripts/prepare_app.sh
 ```
 
 Install the npm packages and load the app:
 ```
 npm install
-node index.js
+npm run dev-start
 # Go to http://localhost:3000
 ```
 

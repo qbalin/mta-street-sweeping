@@ -4,8 +4,8 @@
   "description": "A PWA that tells you when it's time to move your car",
   "main": "index.js",
   "scripts": {
-    "dev-start": "source set_env.sh; node index.js; workbox injectManifest workbox-config.js",
-    "start": "node index.js; workbox injectManifest workbox-config.js",
+    "dev-start": "scripts/setup_env.sh",
+    "start": "scripts/prepare_app.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
