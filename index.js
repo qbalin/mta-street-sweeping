@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000
 const { Zones, sequelize } = require('./db/schema.js');
 
 // Force https on prod
-if (port !== 3000) {
+if (process.env.ENVIRONMENT === 'production') {
   app.use(function(req, res, next) {
     if ((req.get('X-Forwarded-Proto') !== 'https')) {
       res.redirect('https://' + req.get('Host') + req.url);

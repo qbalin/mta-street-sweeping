@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 
 let sequelize;
-if (process.env.PORT === 3000) {
+if (process.env.ENVRIRONMENT === 'production') {
+  sequelize = new Sequelize(process.env.DATABASE_URL);
+} else {
   sequelize = new Sequelize('street-sweeping', 'quentin.balin', '', {
     host: process.env.DATABASE_URL || 'localhost',
     dialect: 'postgres'
   });
-} else {
-  sequelize = new Sequelize(process.env.DATABASE_URL);
 }
 
 sequelize
