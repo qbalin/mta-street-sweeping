@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Setup the DB
-node ./scripts/setup_db.js
-
 # Use API_KEY from ENV to generate a file containing it on the frontend
 node ./scripts/generate_api_key_file.js
 

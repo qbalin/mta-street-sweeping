@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
+const { Zones, sequelize } = require('./db/schema.js');
 
 // Force https on prod
 if (port !== 3000) {
@@ -15,3 +16,19 @@ if (port !== 3000) {
 
 app.use(express.static('public'))
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+app.get('/get-sweeping-info', function (req, res) {
+	const { latitude, longitude } = req.query;
+	const location = sequelize.literal(`ST_GeomFromText('POINT(${latitude} ${longitude})')`);
+	Zones.findAll(
+		{
+			attributes: {
+				include: [[sequelize.fn('ST_Distance', sequelize.col('geometry'), location), 'distance']]
+			},
+			limit: 2,
+			order: [sequelize.fn('ST_Distance', sequelize.col('geometry'), location)]
+		}
+	).then(results =>
+		res.send(JSON.stringify(results))
+	);
+})
