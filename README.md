@@ -16,6 +16,15 @@ npm run dev-start
 # Go to http://localhost:3000
 ```
 
+### Install PostgreSQL
+
+Follow the instructions [here](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup) to install PostgreSQL locally.
+
+Using Postico, create a table named `street-sweeping`, and issue the following statement to enable spatial queries:
+```
+CREATE EXTENSION postgis;
+```
+
 ### Deploy
 Install the [heroku client](https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up).
 
