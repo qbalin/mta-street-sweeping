@@ -1,10 +1,14 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('street-sweeping', process.env.PGUSER || process.env.USER || 'quentin.balin', process.env.PGPASSWORD || '', {
-  host: process.env.DATABASE_URL || 'localhost',
-  dialect: 'postgres'
-});
-
+let sequelize;
+if (process.env.PORT === 3000) {
+  sequelize = new Sequelize('street-sweeping', 'quentin.balin', '', {
+    host: process.env.DATABASE_URL || 'localhost',
+    dialect: 'postgres'
+  });
+} else {
+  sequelize = new Sequelize(process.env.DATABASE_URL);
+}
 
 sequelize
   .authenticate()
