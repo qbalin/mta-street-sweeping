@@ -16,6 +16,11 @@ class LocalStore {
 		localStorage.removeItem(key);
 		this.renderCb && this.renderCb();
 	}
+
+	clear() {
+		localStorage.clear();
+		this.renderCb && this.renderCb();
+	}
 }
 
 export { LocalStore }

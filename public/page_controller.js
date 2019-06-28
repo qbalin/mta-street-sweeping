@@ -43,6 +43,11 @@ class Controller {
 			this.localStore.setItem('streetSide', 'even');
 		}).bind(this);
 
+		document.querySelector('.reset-button').onclick = (function() {
+			this.localStore.clear();
+			this.sessionStore.clear();
+		}).bind(this);
+
 		this.render();
 	}
 
@@ -92,12 +97,15 @@ class Controller {
 				}
 			}
 		}
+
+		if (this.localStore.getItem('sweepingInfo') || this.localStore.getItem('longitude') || this.localStore.getItem('latitude')) {
+			this.show('.card.reset-card');
+		}
 	}
 
 	show(selector) {
 		const elements = document.querySelectorAll(selector);
 		elements.forEach(card => {
-			card.classList.add('d-block');
 			card.classList.remove('d-none');
 		});
 	}
@@ -106,7 +114,6 @@ class Controller {
 		const elements = document.querySelectorAll(selector);
 		elements.forEach(card => {
 			card.classList.add('d-none');
-			card.classList.remove('d-block');
 		});
 	}
 }

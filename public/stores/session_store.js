@@ -16,6 +16,11 @@ class SessionStore {
 		sessionStorage.removeItem(key);
 		this.renderCb && this.renderCb();
 	}
+
+	clear() {
+		sessionStorage.clear();
+		this.renderCb && this.renderCb();
+	}
 }
 
 export { SessionStore }
