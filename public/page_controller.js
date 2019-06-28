@@ -30,6 +30,8 @@ class Controller {
 				const info = new SweepingInfo(jsonResponse).buildSentences();
 				this.localStore.setItem('sweepingInfo', info);
 				console.log(info)
+			}).catch(() => {
+				this.sessionStore.setItem('connectionUnavailable', true);
 			});
 
 
@@ -54,48 +56,54 @@ class Controller {
 	render() {
 		this.hide('.card');
 
-		if (!this.localStore.getItem('latitude') || !this.localStore.getItem('longitude') || this.sessionStore.getItem('gettingLocation')) {
-			this.show('.card.location-button-card');
+		if (!this.sessionStore.getItem('connectionUnavailable')) {
+			if (!this.localStore.getItem('latitude') || !this.localStore.getItem('longitude') || this.sessionStore.getItem('gettingLocation')) {
+				this.show('.card.location-button-card');
 
-			if (this.sessionStore.getItem('gettingLocation')) {
-				this.show('#acquiring-location-spinner');
-				this.hide('#get-location-button');
-			} else if (!this.localStore.getItem('latitude') || !this.localStore.getItem('longitude')) {
-				this.show('#get-location-button');
-				this.hide('#acquiring-location-spinner');
+				if (this.sessionStore.getItem('gettingLocation')) {
+					this.show('#acquiring-location-spinner');
+					this.hide('#get-location-button');
+				} else if (!this.localStore.getItem('latitude') || !this.localStore.getItem('longitude')) {
+					this.show('#get-location-button');
+					this.hide('#acquiring-location-spinner');
+				}
+			} else {
+				this.show('.card.map-card');
+				document.querySelector('#map').src = `https://www.google.com/maps/embed/v1/place?q=${this.localStore.getItem('latitude')},${this.localStore.getItem('longitude')}&key=${API_KEY}`
 			}
-		} else {
-			this.show('.card.map-card');
-			document.querySelector('#map').src = `https://www.google.com/maps/embed/v1/place?q=${this.localStore.getItem('latitude')},${this.localStore.getItem('longitude')}&key=${API_KEY}`
-		}
 
-		if (this.sessionStore.getItem('gettingSweepingInfo') || this.localStore.getItem('sweepingInfo')) {
-			this.show('.card.sweeping-schedule');
+			if (this.sessionStore.getItem('gettingSweepingInfo') || this.localStore.getItem('sweepingInfo')) {
+				this.show('.card.sweeping-schedule');
 
-			if (this.sessionStore.getItem('gettingSweepingInfo')) {
-				this.show('#getting-sweeping-info-spinner');
-				this.hide('#sweeping-info');
-			} else if (this.localStore.getItem('sweepingInfo')) {
-				const info = this.localStore.getItem('sweepingInfo');
+				if (this.sessionStore.getItem('gettingSweepingInfo')) {
+					this.show('#getting-sweeping-info-spinner');
+					this.hide('#sweeping-info');
+				} else if (this.localStore.getItem('sweepingInfo')) {
+					const info = this.localStore.getItem('sweepingInfo');
 
-				this.show('#sweeping-info');
-				this.hide('#getting-sweeping-info-spinner');
+					this.show('#sweeping-info');
+					this.hide('#getting-sweeping-info-spinner');
 
-				document.querySelector('#sweeping-info-streetname').innerText = info.streetname;
-				if (this.localStore.getItem('streetSide') === 'even') {
-					document.querySelector('.even-numbers-button').classList.add('active');
-					document.querySelector('.odd-numbers-button').classList.remove('active');
+					document.querySelector('#sweeping-info-streetname').innerText = info.streetname;
+					if (this.localStore.getItem('streetSide') === 'even') {
+						document.querySelector('.even-numbers-button').classList.add('active');
+						document.querySelector('.odd-numbers-button').classList.remove('active');
 
-					document.querySelector('#sweeping-info-header').innerText = info.right.header;
-					document.querySelector('#sweeping-info-content').innerText = info.right.content;
-				} else {
-					document.querySelector('.even-numbers-button').classList.remove('active');
-					document.querySelector('.odd-numbers-button').classList.add('active');
+						document.querySelector('#sweeping-info-header').innerText = info.right.header;
+						document.querySelector('#sweeping-info-content').innerText = info.right.content;
+					} else {
+						document.querySelector('.even-numbers-button').classList.remove('active');
+						document.querySelector('.odd-numbers-button').classList.add('active');
 
-					document.querySelector('#sweeping-info-header').innerText = info.left.header;
-					document.querySelector('#sweeping-info-content').innerText = info.left.content;
+						document.querySelector('#sweeping-info-header').innerText = info.left.header;
+						document.querySelector('#sweeping-info-content').innerText = info.left.content;
+					}
 				}
 			}
+		}
+
+		if (this.sessionStore.getItem('connectionUnavailable')) {
+			this.show('.card.no-internet');
 		}
 
 		if (this.localStore.getItem('sweepingInfo') || this.localStore.getItem('longitude') || this.localStore.getItem('latitude')) {
