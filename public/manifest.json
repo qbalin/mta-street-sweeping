@@ -1,6 +1,6 @@
 {
-  "name": "MTA Street Sweeping",
-  "short_name": "MTAStreetSweeping",
+  "name": "SF Street Sweeping",
+  "short_name": "SFStreetSweeping",
   "icons": [{
       "src": "/images/icons/icon-144x144.png",
       "sizes": "144x144",
