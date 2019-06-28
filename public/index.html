@@ -26,27 +26,43 @@
     </a>
   </nav>
 
-  <div class="card location-button-card">
-    <div class="card-body">
-      <div id="acquiring-location-spinner" class="card-content spinner-grow text-primary d-none" role="status">
-        <span class="sr-only">Loading...</span>
+  <div class="container">
+    <div class="card location-button-card">
+      <div class="card-body">
+        <div id="acquiring-location-spinner" class="card-content spinner-grow text-primary d-none" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+
+        <button id="get-location-button" type="button" class="btn btn-primary">Register Location</button>
+      </div>
+    </div>
+
+    <div class="card map-card">
+      <div class="card-body">
+        <iframe id="map" width="100%" height="450" frameborder="0" style="border:0" src=""></iframe>
+      </div>
+    </div>
+
+    <div class="card sweeping-schedule text-center">
+      <div class="card-body">
+        <div id="getting-sweeping-info-spinner" class="card-content spinner-grow text-primary d-none" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
 
-      <button id="get-location-button" type="button" class="btn btn-primary">Register Location</button>
+      <div id="container sweeping-info">
+        <div class="card-body">
+          <div class="btn-group" role="group" aria-label="Street Side">
+            <button type="button" class="btn btn-primary odd-numbers-button">Odd Numbers</button>
+            <button type="button" class="btn btn-primary even-numbers-button">Even Numbers</button>
+          </div>
+          <h5 id="sweeping-info-streetname" class="card-title"></h5>
+          <p id="sweeping-info-header" class="card-text"></p>
+          <p id="sweeping-info-content" class="card-text"></p>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="card map-card">
-    <div class="card-body">
-      <iframe id="map" width="100%" height="450" frameborder="0" style="border:0" src=""></iframe>
-    </div>
-  </div>
-
-  <div class="card sweeping-schedule">
-    <div class="card-body">
-    </div>
-  </div>
-
 
   <script>
     // Check that service workers and notifications are supported

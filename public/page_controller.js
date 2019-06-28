@@ -20,14 +20,27 @@ class Controller {
 				this.localStore.setItem('latitude', latitude);
 				this.localStore.setItem('longitude', longitude);
 
+
+				this.sessionStore.setItem('gettingSweepingInfo', true);
 				return fetch(`${window.location.origin}/get-sweeping-info?latitude=${latitude}&longitude=${longitude}`);
 			}).then(response => response.json())
 			.then(jsonResponse => {
-				const info = new SweepingInfo(jsonResponse).buildInfo();
+				this.sessionStore.removeItem('gettingSweepingInfo');
+
+				const info = new SweepingInfo(jsonResponse).buildSentences();
+				this.localStore.setItem('sweepingInfo', info);
 				console.log(info)
 			});
 
 
+		}).bind(this);
+
+		document.querySelector('.odd-numbers-button').onclick = (function() {
+			this.localStore.setItem('streetSide', 'odd');
+		}).bind(this);
+
+		document.querySelector('.even-numbers-button').onclick = (function() {
+			this.localStore.setItem('streetSide', 'even');
 		}).bind(this);
 
 		this.render();
@@ -51,8 +64,34 @@ class Controller {
 			document.querySelector('#map').src = `https://www.google.com/maps/embed/v1/place?q=${this.localStore.getItem('latitude')},${this.localStore.getItem('longitude')}&key=${API_KEY}`
 		}
 
+		if (this.sessionStore.getItem('gettingSweepingInfo') || this.localStore.getItem('sweepingInfo')) {
+			this.show('.card.sweeping-schedule');
 
+			if (this.sessionStore.getItem('gettingSweepingInfo')) {
+				this.show('#getting-sweeping-info-spinner');
+				this.hide('#sweeping-info');
+			} else if (this.localStore.getItem('sweepingInfo')) {
+				const info = this.localStore.getItem('sweepingInfo');
 
+				this.show('#sweeping-info');
+				this.hide('#getting-sweeping-info-spinner');
+
+				document.querySelector('#sweeping-info-streetname').innerText = info.streetname;
+				if (this.localStore.getItem('streetSide') === 'even') {
+					document.querySelector('.even-numbers-button').classList.add('active');
+					document.querySelector('.odd-numbers-button').classList.remove('active');
+
+					document.querySelector('#sweeping-info-header').innerText = info.right.header;
+					document.querySelector('#sweeping-info-content').innerText = info.right.content;
+				} else {
+					document.querySelector('.even-numbers-button').classList.remove('active');
+					document.querySelector('.odd-numbers-button').classList.add('active');
+
+					document.querySelector('#sweeping-info-header').innerText = info.left.header;
+					document.querySelector('#sweeping-info-content').innerText = info.left.content;
+				}
+			}
+		}
 	}
 
 	show(selector) {
