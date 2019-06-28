@@ -1,3 +1,6 @@
+### Demo
+See small demo on [YouTube](https://youtu.be/h_9jvjsI8YE).
+
 ### Setup
 
 Create a Google Maps API key ([Maps Embed API](https://console.cloud.google.com/google/maps-apis))
