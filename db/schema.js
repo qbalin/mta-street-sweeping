@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 let sequelize;
-if (process.env.ENVRIRONMENT === 'production') {
+if (process.env.ENVIRONMENT === 'production') {
   sequelize = new Sequelize(process.env.DATABASE_URL);
 } else {
   sequelize = new Sequelize('street-sweeping', 'quentin.balin', '', {
