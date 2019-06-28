@@ -19,7 +19,7 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 app.get('/get-sweeping-info', function (req, res) {
 	const { latitude, longitude } = req.query;
-	const location = sequelize.literal(`ST_GeomFromText('POINT(${latitude} ${longitude})')`);
+	const location = sequelize.literal(`ST_GeomFromText('POINT(${longitude} ${latitude})')`);
 	Zones.findAll(
 		{
 			attributes: {
