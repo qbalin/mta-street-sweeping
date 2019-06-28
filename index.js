@@ -25,7 +25,7 @@ app.get('/get-sweeping-info', function (req, res) {
 			attributes: {
 				include: [[sequelize.fn('ST_Distance', sequelize.col('geometry'), location), 'distance']]
 			},
-			limit: 2,
+			limit: 20,
 			order: [sequelize.fn('ST_Distance', sequelize.col('geometry'), location)]
 		}
 	).then(results =>

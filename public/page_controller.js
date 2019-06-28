@@ -1,43 +1,74 @@
-import { getLocation, notify } from './utils.js';
+import { getLocation, notify, SweepingInfo } from './utils.js';
 import API_KEY from './google_api_key.js';
+import * as stores from './stores/index.js';
 
 class Controller {
 	constructor() {
-		this.initialState = document.getElementById('initial-state');
-		this.location = document.getElementById('location');
-		this.spinner = document.getElementById('spinner');
-		this.sections = [this.initialState, this.spinner, this.location];
+		sessionStorage.clear();
 
-		this.googleMap = document.getElementById('google-map');
+		this.sessionStore = new stores.SessionStore(this.render.bind(this));
+		this.localStore = new stores.LocalStore(this.render.bind(this));
 
-		this.locationButton = document.getElementById('location-button');
+		this.locationButton = document.getElementById('get-location-button');
 		this.locationButton.onclick = (function() {
-			this.showSection('spinner');
-			getLocation(coordinates => {	
+			this.sessionStore.setItem('gettingLocation', true);
+
+			getLocation().then(coordinates => {
+				this.sessionStore.removeItem('gettingLocation');
+
 				const { latitude, longitude } = coordinates.coords;
-			
-				this.googleMap.src = `https://www.google.com/maps/embed/v1/place?q=${latitude},${longitude}&key=${API_KEY}`
-				this.showSection('location');
-				notify('Found ya!');
+				this.localStore.setItem('latitude', latitude);
+				this.localStore.setItem('longitude', longitude);
+
+				return fetch(`${window.location.origin}/get-sweeping-info?latitude=${latitude}&longitude=${longitude}`);
+			}).then(response => response.json())
+			.then(jsonResponse => {
+				const info = new SweepingInfo(jsonResponse).buildInfo();
+				console.log(info)
 			});
+
+
 		}).bind(this);
 
-		this.showSection('initialState');
+		this.render();
 	}
 
+	render() {
+		this.hide('.card');
 
-	showSection(name) {
-		// Hide all sections
-		this.sections.forEach(section => {
-			section.classList.add('d-none');
-			section.classList.remove('d-block');
-		});
+		if (!this.localStore.getItem('latitude') || !this.localStore.getItem('longitude') || this.sessionStore.getItem('gettingLocation')) {
+			this.show('.card.location-button-card');
 
-		// Show section with given name
-		if (this[name]) {
-			this[name].classList.remove('d-none');
-			this[name].classList.add('d-block');
+			if (this.sessionStore.getItem('gettingLocation')) {
+				this.show('#acquiring-location-spinner');
+				this.hide('#get-location-button');
+			} else if (!this.localStore.getItem('latitude') || !this.localStore.getItem('longitude')) {
+				this.show('#get-location-button');
+				this.hide('#acquiring-location-spinner');
+			}
+		} else {
+			this.show('.card.map-card');
+			document.querySelector('#map').src = `https://www.google.com/maps/embed/v1/place?q=${this.localStore.getItem('latitude')},${this.localStore.getItem('longitude')}&key=${API_KEY}`
 		}
+
+
+
+	}
+
+	show(selector) {
+		const elements = document.querySelectorAll(selector);
+		elements.forEach(card => {
+			card.classList.add('d-block');
+			card.classList.remove('d-none');
+		});
+	}
+
+	hide(selector) {
+		const elements = document.querySelectorAll(selector);
+		elements.forEach(card => {
+			card.classList.add('d-none');
+			card.classList.remove('d-block');
+		});
 	}
 }
 

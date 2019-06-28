@@ -2,3 +2,4 @@ node_modules/
 public/google_api_key.js
 scripts/setup_env.sh
 public/service-worker.js
+.DS_Store
