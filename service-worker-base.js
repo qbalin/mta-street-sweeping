@@ -11,15 +11,6 @@ if (workbox) {
   });
 
   workbox.precaching.precacheAndRoute([]);
-
-  workbox.routing.registerRoute(
-    /\.js$/,
-    new workbox.strategies.NetworkFirst({cacheName: 'js'})
-  );
-  workbox.routing.registerRoute(
-    /\.css$/,
-    new workbox.strategies.NetworkFirst({cacheName: 'css'})
-  );
 } else {
   console.log(`Boo! Workbox didn't load 😬`);
 }
